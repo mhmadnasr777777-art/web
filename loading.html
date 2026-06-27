@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول | MG APP</title>
+    <!-- ربط ملف التنسيق المخصص للودينغ -->
+    <link rel="stylesheet" href="loading.css">
+</head>
+<body>
+
+    <div class="loading-container">
+        <!-- شعار البوت التلقائي -->
+        <div class="logo-wrapper">
+            <img src="444.png" alt="MG APP Logo" class="loading-logo">
+            <div class="pulse-ring"></div>
+        </div>
+        
+        <h2>مرحباً بك في لوحة تحكم MG APP</h2>
+        <p>يرجى تسجيل الدخول باستخدام حساب Discord الخاص بك لتمكين إدارة سيرفراتك والتحكم بالإعدادات فوراً.</p>
+        
+        <!-- زر التوجيه والربط المباشر مع سيرفر الـ API -->
+        <button class="login-btn" onclick="redirectToDiscord()">
+            <span class="btn-icon">🔐</span>
+            <span class="btn-text">تسجيل الدخول عبر Discord</span>
+        </button>
+    </div>
+
+    <script>
+        // دالة تحويل المستخدم إلى رابط الديسكورد الموثق بالسيرفر الخلفي
+        function redirectToDiscord() {
+            window.location.href = 'http://localhost:3000/api/auth/discord';
+        }
+    </script>
+</body>
+</html>

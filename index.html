@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة تحكم MG APP - النظام المتكامل الخارق</title>
+    <link rel="stylesheet" href="2style.css">
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo-area">
+            <img src="444.png" alt="MG APP Logo" class="brand-logo">
+            <h2>MG APP</h2>
+        </div>
+        <a href="#" class="nav-link" onclick="switchTab('general-tab')" id="menu_general">⚙️ إعدادات السيرفر العامة</a>
+        <a href="#" class="nav-link" onclick="switchTab('welcome-tab')" id="menu_welcome">👋 نظام الترحيب والمغادرة Pro</a>
+        <a href="#" class="nav-link" onclick="switchTab('replies-tab')" id="menu_replies">💬 الردود التلقائية الذكية Pro</a>
+        <a href="#" class="nav-link" onclick="switchTab('roles-tab')" id="menu_roles">👥 الرولات التلقائية</a>
+        <a href="#" class="nav-link active" onclick="switchTab('mod-tab')" id="menu_mod">🛡️ نظام الإشراف والـ Mod المطور</a>
+        <a href="#" class="nav-link" onclick="switchTab('ticket-tab')" id="menu_ticket">🎫 نظام التذاكر الاحترافي Pro</a>
+        <a href="#" class="nav-link" onclick="switchTab('protection-tab')" id="menu_protection">🔒 الحماية وصلاحيات اللوحة</a>
+        
+        <div style="margin-top: auto; padding: 10px 0;">
+            <button class="save-btn" onclick="saveAllData()" id="btn_save_all">💾 حفظ التعديلات الكلية</button>
+        </div>
+    </div>
+
+    <div class="main-container">
+        
+        <!-- ⚙️ قسم الإعدادات العامة -->
+        <div id="general-tab" class="tab-content">
+            <div class="section-card">
+                <h3>🌐 إعدادات لغة النظام الأساسية</h3>
+                <div class="form-group">
+                    <select id="serverLanguage" onchange="changeAppLanguage(this.value)">
+                        <option value="ar">العربية (Arabic)</option>
+                        <option value="en">English</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- 👋 قسم نظام الترحيب والمغادرة الاحترافي -->
+        <div id="welcome-tab" class="tab-content">
+            <div class="probot-header" style="border-right-color: var(--success);">
+                <h3>👋 نظام الترحيب والمغادرة الاحترافي المتقدم</h3>
+                <p>قم بتخصيص طريقة استقبال ومغادرة الأعضاء باستخدام الرسائل المتقدمة، التضمينات الملونة (Embeds)، أو الصور التلقائية.</p>
+            </div>
+
+            <div class="system-variables-badge-box">
+                <strong>💡 المتغيرات الذكية المتاحة للاستخدام في الرسائل:</strong>
+                <div class="badges-wrapper">
+                    <span class="v-badge" onclick="copyVar('[user]')">[user] منشن العضو</span>
+                    <span class="v-badge" onclick="copyVar('[username]')">[username] اسم العضو</span>
+                    <span class="v-badge" onclick="copyVar('[server]')">[server] اسم السيرفر</span>
+                    <span class="v-badge" onclick="copyVar('[membercount]')">[membercount] عدد الأعضاء</span>
+                </div>
+            </div>
+
+            <div class="probot-section-card-inside">
+                <div class="probot-card-top">
+                    <h4>📥 إعدادات نظام الدخول والاستقبال المتقدم (Welcome)</h4>
+                    <label class="probot-switch">
+                        <input type="checkbox" id="welcome_system_toggle" checked>
+                        <span class="probot-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>روم إرسال الترحيب:</label>
+                        <select id="welcomeChannel" class="channel-select-box pro-select"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>نوع رسالة الترحيب:</label>
+                        <select id="welcomeMessageType" class="pro-select" onchange="updateWelcomePreviewVisibility()">
+                            <option value="text">رسالة نصية عادية (Text)</option>
+                            <option value="embed">تضمين ملون واحترافي (Embed)</option>
+                            <option value="image">بطاقة صورة جرافيك تلقائية (Image Card)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>نص رسالة الترحيب الدائم:</label>
+                    <textarea id="welcomeMessage" rows="3" placeholder="أهلاً بك يا [user] في سيرفرنا [server]..."></textarea>
+                </div>
+
+                <div class="form-group" id="welcome_image_input_group">
+                    <div class="media-input-group">
+    <label for="welcomeImageUpload" class="custom-file-upload">
+        📁 اختر صورة الخلفية
+    </label>
+    <input type="file" id="welcomeImageUpload" onchange="handleFileUpload(this, 'welcomeImage')">
+    
+    <input type="text" id="welcomeImage" placeholder="رابط الصورة أو سيتم توليده تلقائياً عند رفع ملف...">
+</div>
+                </div>
+            </div>
+
+            <div class="probot-section-card-inside">
+                <div class="probot-card-top">
+                    <h4>📤 إعدادات نظام الخروج والمغادرة (Leave)</h4>
+                    <label class="probot-switch">
+                        <input type="checkbox" id="leave_system_toggle" checked>
+                        <span class="probot-slider"></span>
+                    </label>
+                </div>
+
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>روم إرسال المغادرة:</label>
+                        <select id="leaveChannel" class="channel-select-box pro-select"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>نوع رسالة المغادرة:</label>
+                        <select id="leaveMessageType" class="pro-select" onchange="updateLeavePreviewVisibility()">
+                            <option value="text">رسالة نصية عادية (Text)</option>
+                            <option value="embed">تضمين ملون واحترافي (Embed)</option>
+                            <option value="image">بطاقة صورة جرافيك تلقائية (Image Card)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>نص رسالة المغادرة الدائم:</label>
+                    <textarea id="leaveMessage" rows="3" placeholder="للأسف غادرنا [username]..."></textarea>
+                </div>
+
+                <div class="form-group" id="leave_image_input_group">
+                    <label>رابط صورة خلفية المغادرة المخصصة (أو ارفع ملفاً):</label>
+                    <div class="media-input-group">
+                        <input type="text" id="leaveImage" placeholder="https://example.com/leave-bg.png">
+                        <input type="file" accept="image/*" onchange="handleFileUpload(this, 'leaveImage')">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 💬 قسم نظام الردود التلقائية الذكية الاحترافي -->
+        <div id="replies-tab" class="tab-content">
+            <div class="probot-header" style="border-right-color: var(--probot-blue);">
+                <h3>💬 نظام الردود التلقائية الذكية والمتقدمة | Auto Replies Pro</h3>
+                <p>اجعل خادمك يتفاعل تلقائياً مع الكلمات والجمل الشائعة، مع تحديد دقيق للرتب المسموحة والرومات الصالحة لمنع إزعاج الأعضاء.</p>
+            </div>
+
+            <div class="system-variables-badge-box">
+                <strong>💡 يمكنك استخدام كود المنشن الذكي داخل نص الرد التلقائي:</strong>
+                <div class="badges-wrapper">
+                    <span class="v-badge" onclick="copyVar('[user]')">[user] منشن العضو</span>
+                    <span class="v-badge" onclick="copyVar('[username]')">[username] اسم العضو المنشأ</span>
+                </div>
+            </div>
+
+            <div class="probot-section-card-inside">
+                <div class="probot-panel-header">
+                    <h4>📋 قائمة الردود التلقائية الحالية في خادمك</h4>
+                    <button type="button" class="probot-btn-add" onclick="addNewReply()">➕ إضافة رد تلقائي جديد</button>
+                </div>
+                <div id="repliesContainer" class="probot-panels-list-vertical"></div>
+            </div>
+        </div>
+
+
+        <!-- 👥 قسم الرولات التلقائية -->
+        <div id="roles-tab" class="tab-content">
+            <div class="section-card">
+                <h3>👥 الرولات التلقائية الفورية عند الدخول</h3>
+                <div class="form-group"><label>رولات الأعضاء (Members):</label><select id="memberRoles" class="role-select-box" multiple style="height:120px;"></select></div>
+                <div class="form-group"><label>رولات البوتات (Bots):</label><select id="botRoles" class="role-select-box" multiple style="height:120px;"></select></div>
+            </div>
+        </div>
+
+        <!-- 🛡️ قسم نظام الإشراف والـ Mod المطور بالكامل باللغة العربية -->
+<div id="mod-tab" class="tab-content active-tab">
+    <div class="probot-header" style="border-right-color: var(--danger);">
+        <h3>🛡️ وحدة الإشراف الإداري والأوامر التلقائية المتكاملة | نظام بروبوت العربي</h3>
+        <p>تحكم بالكامل بجميع الأوامر الإدارية داخل خادمك، قم بتفعيل أو تعطيل الأوامر وتخصيص طريقة كتابتها لتسهيل عمل المشرفين.</p>
+    </div>
+    
+    <div class="probot-grid">
+        
+        <!-- 1. أمر الحظر (Ban) -->
+        <div class="probot-card animated-card">
+            <div class="probot-card-top">
+                <h4>🔨 أمر الحظر الأساسي (Ban)</h4>
+                <label class="probot-switch">
+                    <input type="checkbox" id="status_ban" checked>
+                    <span class="probot-slider"></span>
+                </label>
+            </div>
+            <div class="probot-card-bottom">
+                <label>اسم الأمر:</label>
+                <input type="text" id="cmd_ban" placeholder="مثال: ban أو حظر">
+            </div>
+        </div>
+
+        <!-- 2. أمر إلغاء الحظر (Unban) -->
+        <div class="probot-card animated-card">
+            <div class="probot-card-top">
+                <h4>🔓 أمر فك الحظر عن عضو (Unban)</h4>
+                <label class="probot-switch">
+                    <input type="checkbox" id="status_unban" checked>
+                    <span class="probot-slider"></span>
+                </label>
+            </div>
+            <div class="probot-card-bottom">
+                <label>اسم الأمر:</label>
+                <input type="text" id="cmd_unban" placeholder="مثال: unban أو فك-حظر">
+            </div>
+        </div>
+
+        <!-- 3. أمر الطرد (Kick) -->
+        <div class="probot-card animated-card">
+            <div class="probot-card-top">
+                <h4>👢 أمر الطرد من الخادم (Kick)</h4>
+                <label class="probot-switch">
+                    <input type="checkbox" id="status_kick" checked>
+                    <span class="probot-slider"></span>
+                </label>
+            </div>
+            <div class="probot-card-bottom">
+                <label>اسم الأمر:</label>
+                <input type="text" id="cmd_kick" placeholder="مثال: kick أو طرد">
+            </div>
+        </div>
+
+        <!-- 4. أمر الميوت / كتم الشات (Mute) -->
+        <div class="probot-card animated-card">
+            <div class="probot-card-top">
+                <h4>🔇 أمر الإسكات والكتم المؤقت (Mute)</h4>
+                <label class="probot-switch">
+                    <input type="checkbox" id="status_mute" checked>
+                    <span class="probot-slider"></span>
+                </label>
+            </div>
+            <div class="probot-card-bottom">
+                <label>اسم الأمر:</label>
+                <input type="text" id="cmd_mute" placeholder="مثال: mute أو ميوت">
+            </div>
+        </div>
+
+        <!-- 5. أمر إلغاء الميوت / فك الكتم (Unmute) -->
+        <div class="probot-card animated-card">
+            <div class="probot-card-top">
+                <h4>🔊 أمر إلغاء الكتم وتفعيل الشات (Unmute)</h4>
+                <label class="probot-switch">
+                    <input type="checkbox" id="status_unmute" checked>
+                    <span class="probot-slider"></span>
+                </label>
+            </div>
+            <div class="probot-card-bottom">
+                <label>اسم الأمر:</label>
+                <input type="text" id="cmd_unmute" placeholder="مثال: unmute أو فك-ميوت">
+            </div>
+        </div>
+
+        <!-- 6. أمر السجن المؤقت (Jail) -->
+        <div class="probot-card animated-card">
+            <div class="probot-card-top">
+                <h4>⛓️ أمر السجن المؤقت للعضو (Jail)</h4>
+                <label class="probot-switch">
+                    <input type="checkbox" id="status_jail" checked>
+                    <span class="probot-slider"></span>
+                </label>
+            </div>
+            <div class="probot-card-bottom">
+                <label>اسم الأمر:</label>
+                <input type="text" id="cmd_jail" placeholder="مثال: jail أو سجن">
+            </div>
+        </div>
+
+        <!-- 7. أمر توجيه إنذار (Warn) -->
+        <div class="probot-card animated-card">
+            <div class="probot-card-top">
+                <h4>⚠️ أمر توجيه إنذار رسمي (Warn)</h4>
+                <label class="probot-switch">
+                    <input type="checkbox" id="status_warn" checked>
+                    <span class="probot-slider"></span>
+                </label>
+            </div>
+            <div class="probot-card-bottom">
+                <label>اسم الأمر:</label>
+                <input type="text" id="cmd_warn" placeholder="مثال: warn أو تحذير">
+            </div>
+        </div>
+
+        <!-- 8. أمر عرض التحذيرات (Warnings) -->
+        <div class="probot-card animated-card">
+            <div class="probot-card-top">
+                <h4>📊 أمر عرض سجل إنذارات العضو (Warnings)</h4>
+                <label class="probot-switch">
+                    <input type="checkbox" id="status_warnings" checked>
+                    <span class="probot-slider"></span>
+                </label>
+            </div>
+            <div class="probot-card-bottom">
+                <label>اسم الأمر:</label>
+                <input type="text" id="cmd_warnings" placeholder="مثال: warnings أو سوابق">
+            </div>
+        </div>
+
+        <!-- 9. أمر مسح وتنظيف الشات (Clear) -->
+        <div class="probot-card animated-card">
+            <div class="probot-card-top">
+                <h4>🧹 أمر مسح وتنظيف الرسائل (Clear)</h4>
+                <label class="probot-switch">
+                    <input type="checkbox" id="status_clear" checked>
+                    <span class="probot-slider"></span>
+                </label>
+            </div>
+            <div class="probot-card-bottom">
+                <label>اسم الأمر:</label>
+                <input type="text" id="cmd_clear" placeholder="مثال: clear أو مسح">
+            </div>
+        </div>
+
+        <!-- 10. أمر قفل الروم (Lock) -->
+        <div class="probot-card animated-card">
+            <div class="probot-card-top">
+                <h4>🔒 أمر قفل الروم الحالي (Lock)</h4>
+                <label class="probot-switch">
+                    <input type="checkbox" id="status_lock" checked>
+                    <span class="probot-slider"></span>
+                </label>
+            </div>
+            <div class="probot-card-bottom">
+                <label>اسم الأمر:</label>
+                <input type="text" id="cmd_lock" placeholder="مثال: lock أو قفل">
+            </div>
+        </div>
+
+        <!-- 11. أمر فتح الروم (Unlock) -->
+        <div class="probot-card animated-card">
+            <div class="probot-card-top">
+                <h4>🔓 أمر فتح الروم المقفل (Unlock)</h4>
+                <label class="probot-switch">
+                    <input type="checkbox" id="status_unlock" checked>
+                    <span class="probot-slider"></span>
+                </label>
+            </div>
+            <div class="probot-card-bottom">
+                <label>اسم الأمر:</label>
+                <input type="text" id="cmd_unlock" placeholder="مثال: unlock أو فتح">
+            </div>
+        </div>
+
+        <!-- 12. أمر قفل السيرفر بالكامل (Lockdown) -->
+        <div class="probot-card animated-card">
+            <div class="probot-card-top">
+                <h4>🚨 أمر قفل السيرفر كاملاً في الطوارئ (Lockdown)</h4>
+                <label class="probot-switch">
+                    <input type="checkbox" id="status_lockdown" checked>
+                    <span class="probot-slider"></span>
+                </label>
+            </div>
+            <div class="probot-card-bottom">
+                <label>اسم الأمر:</label>
+                <input type="text" id="cmd_lockdown" placeholder="مثال: lockdown أو حظر-عام">
+            </div>
+        </div>
+
+        <!-- 13. أمر تعديل لقب العضو (Nickname) -->
+        <div class="probot-card animated-card">
+            <div class="probot-card-top">
+                <h4>✏️ أمر تعديل لقب واسم العضو (Nickname)</h4>
+                <label class="probot-switch">
+                    <input type="checkbox" id="status_setNick" checked>
+                    <span class="probot-slider"></span>
+                </label>
+            </div>
+            <div class="probot-card-bottom">
+                <label>اسم الأمر:</label>
+                <input type="text" id="cmd_setNick" placeholder="مثال: nick أو لقب">
+            </div>
+        </div>
+
+        <!-- 14. أمر إعطاء وسحب رتبة (Role) -->
+        <div class="probot-card animated-card">
+            <div class="probot-card-top">
+                <h4>👑 أمر إعطاء أو سحب رتبة من عضو (Role)</h4>
+                <label class="probot-switch">
+                    <input type="checkbox" id="status_role" checked>
+                    <span class="probot-slider"></span>
+                </label>
+            </div>
+            <div class="probot-card-bottom">
+                <label>اسم الأمر:</label>
+                <input type="text" id="cmd_role" placeholder="مثال: role o رتبة">
+            </div>
+        </div>
+
+        <!-- 15. أمر الوضع البطيء (Slowmode) -->
+        <div class="probot-card animated-card">
+            <div class="probot-card-top">
+                <h4>⏳ أمر تفعيل الوضع البطيء للشات (Slowmode)</h4>
+                <label class="probot-switch">
+                    <input type="checkbox" id="status_slowmode" checked>
+                    <span class="probot-slider"></span>
+                </label>
+            </div>
+            <div class="probot-card-bottom">
+                <label>اسم الأمر:</label>
+                <input type="text" id="cmd_slowmode" placeholder="مثال: slowmode أو بطيء">
+            </div>
+        </div>
+
+    </div>
+</div>
+        <!-- 🎫 قسم نظام التذاكر الاحترافي المطور -->
+        <div id="ticket-tab" class="tab-content">
+            <div class="probot-header-ticket">
+                <div class="probot-header-title-wrapper">
+                    <h3>🎫 نظام التذاكر الاحترافي المتقدم | Multi-Panel Ticket System</h3>
+                    <p>أفضل نظام تذاكر متكامل يتيح لك إنشاء لوحات تذاكر متعددة ومنفصلة لكل أقسام الخادم.</p>
+                </div>
+                <div class="probot-main-switch-wrapper">
+                    <span class="switch-status-text">تفعيل النظام العام</span>
+                    <label class="probot-switch">
+                        <input type="checkbox" id="probot_ticket_toggle" checked onchange="toggleProBotTicketSystem(this.checked)">
+                        <span class="probot-slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div id="probot_ticket_container" class="probot-ticket-layout">
+                <div class="probot-section-card-inside">
+                    <h4>⚙️ خيارات الإدارة والأمان المتقدمة</h4>
+                    <div class="grid-2">
+                        <div class="probot-checkbox-group-vertical">
+                            <label class="probot-checkbox-label">
+                                <input type="checkbox" id="useEmbed" checked>
+                                <span class="probot-custom-checkbox"></span>
+                                <span>إرسال رسائل التذاكر على شكل تسمين ملون عالي الدقة (Embed)</span>
+                            </label>
+                            <label class="probot-checkbox-label">
+                                <input type="checkbox" id="pUserClose" checked>
+                                <span class="probot-custom-checkbox"></span>
+                                <span>السماح لفتح التذكرة بإغلاقها (User Close)</span>
+                            </label>
+                        </div>
+                        <div class="probot-checkbox-group-vertical">
+                            <label class="probot-checkbox-label">
+                                <input type="checkbox" id="pAdminCopy" checked>
+                                <span class="probot-custom-checkbox"></span>
+                                <span>حفظ وتوليد أرشيف شات متكامل تلقائياً عند الحذف (Transcript)</span>
+                            </label>
+                            <label class="probot-checkbox-label">
+                                <input type="checkbox" id="pClaimSystem" checked>
+                                <span class="probot-custom-checkbox"></span>
+                                <span>تفعيل ميزة المطالبة بالتذكرة (Ticket Claim) لمنع التشتت</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="probot-section-card-inside">
+                    <div class="probot-panel-header">
+                        <h4>🗂️ لوحات وأقسام التذاكر النشطة (Multi-Panels)</h4>
+                        <button type="button" class="probot-btn-add" onclick="addNewTicketPanel()">➕ إنشاء لوحة تذاكر جديدة</button>
+                    </div>
+                    <div id="panelsContainer" class="probot-panels-list-vertical"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 🔒 قسم نظام الحماية والمود -->
+        <div id="protection-tab" class="tab-content">
+            <div class="section-card">
+                <section id="protection-maintenance-settings" class="settings-section">
+    <div class="section-header">
+        <h2>🛡️ نظام الحماية المتقدمة وصيانة الخادم</h2>
+        <p>تحكم بأدوات تأمين السيرفر ضد التخريب، وتفعيل أوضاع الصيانة وإصلاح أعطال قاعدة البيانات.</p>
+    </div>
+    
+    <hr class="section-divider">
+
+    <div class="protection-grid">
+        <div class="protection-card animate-fade">
+            <h3>⚙️ جدار حماية السيرفر (Anti-Rogue Staff)</h3>
+            <p class="card-desc">مراقبة تصرفات طاقم الإدارة وسحب صلاحياتهم تلقائياً في حال وجود محاولات تخريب بشرية.</p>
+            
+            <div class="form-group toggle-group">
+                <label for="antiRogueToggle">تفعيل جدار الحماية التلقائي</label>
+                <label class="switch">
+                    <input type="checkbox" id="antiRogueToggle" checked>
+                    <span class="slider round"></span>
+                </label>
+            </div>
+
+            <div class="form-group">
+                <label for="banLimitInput">📌 حد الحظر الحرج للمشرف (خلال ساعة):</label>
+                <div class="number-input-wrapper">
+                    <input type="number" id="banLimitInput" value="3" min="1" max="20">
+                    <span class="input-hint">إذا تجاوز المشرف هذا العدد من الحظورات خلال ساعة سيتم تجميده فوراً.</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="banActionSelect">🚨 الإجراء الأمني المتخذ ضد المخرب:</label>
+                <select id="banActionSelect" class="custom-select">
+                    <option value="strip_roles">سحب الرتب فوراً وتجريده من الصلاحيات (آمن)</option>
+                    <option value="kick">طرده نهائياً من السيرفر (Kick)</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="protection-card animate-fade">
+            <h3>🛠️ أدوات صيانة الخادم وصلاحيات اللوحة</h3>
+            <p class="card-desc">إدارة صلاحيات الدخول للوحة التحكم وتفعيل وضع الطوارئ والصيانة الشاملة.</p>
+
+            <div class="form-group">
+                <label for="modRolesSelect">👑 الرتب المسموح لها بالوصول وإدارة الصيانة:</label>
+                <select id="modRolesSelect" class="custom-select role-select-box" multiple>
+                    </select>
+                <span class="input-hint">اضغط مع الاستمرار على Ctrl لتحديد أكثر من رتبة.</span>
+            </div>
+
+            <div class="form-group toggle-group">
+                <label for="ownerOnlyToggle">🔒 قفل الصيانة للمؤسس فقط (Server Owner)</label>
+                <label class="switch">
+                    <input type="checkbox" id="ownerOnlyToggle" checked>
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <span class="input-hint block-hint">عند تفعيلها، لن يتمكن أي مشرف أو مطور من تعديل خيارات الصيانة أو الحماية إلا صاحب السيرفر الأساسي.</span>
+        </div>
+    </div>
+</section>
+
+    </div>
+
+    <script>
+        let serverChannelsCached = [];
+        let serverRolesCached = [];
+        let ticketPanels = []; 
+        let currentReplies = [];
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active-tab'));
+            document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active-tab');
+            event.currentTarget.classList.add('active');
+        }
+
+        function copyVar(text) {
+            navigator.clipboard.writeText(text);
+            alert("تم نسخ المتغير الذكي: " + text);
+        }
+
+        function updateWelcomePreviewVisibility() {
+            const type = document.getElementById('welcomeMessageType').value;
+            document.getElementById('welcome_image_input_group').style.display = (type === 'image') ? 'block' : 'none';
+        }
+
+        function updateLeavePreviewVisibility() {
+            const type = document.getElementById('leaveMessageType').value;
+            document.getElementById('leave_image_input_group').style.display = (type === 'image') ? 'block' : 'none';
+        }
+
+        function toggleProBotTicketSystem(enabled) {
+            const container = document.getElementById('probot_ticket_container');
+            container.style.opacity = enabled ? "1" : "0.3";
+            container.style.pointerEvents = enabled ? "auto" : "none";
+        }
+
+        function handleFileUpload(inputElement, targetInputId) {
+            const file = inputElement.files[0];
+            if (file) document.getElementById(targetInputId).value = `https://cdn.discordapp.com/attachments/${file.name}`;
+        }
+
+        async function loadServerMetadata() {
+            const resMeta = await fetch('/api/get-server-meta');
+            const meta = await resMeta.json();
+            
+            serverChannelsCached = meta.channels || [];
+            serverRolesCached = meta.roles || [];
+
+            document.querySelectorAll('.channel-select-box').forEach(select => {
+                select.innerHTML = '<option value="">-- اختر روم --</option>';
+                serverChannelsCached.forEach(ch => select.innerHTML += `<option value="${ch.id}">${ch.name}</option>`);
+            });
+
+            document.querySelectorAll('.role-select-box').forEach(select => {
+                select.innerHTML = '';
+                serverRolesCached.forEach(r => select.innerHTML += `<option value="${r.id}">${r.name}</option>`);
+            });
+        }
+
+        function renderAutoReplies() {
+            const container = document.getElementById('repliesContainer');
+            container.innerHTML = '';
+
+            if (currentReplies.length === 0) {
+                container.innerHTML = `<p style="color:#6b7280; text-align:center; padding: 20px;">لا توجد أي ردود تلقائية مبرمجة حالياً. اضغط على زر الإضافة في الأعلى.</p>`;
+                return;
+            }
+
+            currentReplies.forEach((reply, idx) => {
+                let channelOptions = '';
+                serverChannelsCached.forEach(ch => {
+                    const isSelected = reply.allowedChannels && reply.allowedChannels.includes(ch.id);
+                    channelOptions += `<option value="${ch.id}" ${isSelected ? 'selected' : ''}>${ch.name}</option>`;
+                });
+
+                let roleOptions = '';
+                serverRolesCached.forEach(role => {
+                    const isSelected = reply.allowedRoles && reply.allowedRoles.includes(role.id);
+                    roleOptions += `<option value="${role.id}" ${isSelected ? 'selected' : ''}>${role.name}</option>`;
+                });
+
+                container.innerHTML += `
+                    <div class="panel-pro-card reply-pro-card">
+                        <div class="panel-pro-header">
+                            <span class="panel-badge-pro" style="background: var(--probot-blue)">رد تلقائي #${idx + 1}</span>
+                            <div style="flex:1;"></div>
+                            <button type="button" class="probot-btn-delete" onclick="currentReplies.splice(${idx},1); renderAutoReplies();">🗑️ إزالة الرد</button>
+                        </div>
+                        
+                        <div class="grid-2">
+                            <div class="form-group">
+                                <label>الكلمة أو الجملة المفتاحية (Keyword):</label>
+                                <input type="text" value="${reply.keyword || ''}" placeholder="مثال: السلام عليكم" oninput="currentReplies[${idx}].keyword=this.value">
+                            </div>
+                            <div class="form-group">
+                                <label>نوع تطابق البوت مع الكلمة (Match Type):</label>
+                                <select class="pro-select" onchange="currentReplies[${idx}].matchType=this.value">
+                                    <option value="exact" ${reply.matchType === 'exact' ? 'selected' : ''}>تطابق تام ومطابق بالملي (Exact Match)</option>
+                                    <option value="contains" ${reply.matchType === 'contains' ? 'selected' : ''}>الرسالة تحتوي على الكلمة (Contains)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>الرد التلقائي للبوت (Response Message):</label>
+                            <textarea rows="2" placeholder="مثال: وعليكم السلام ورحمة الله وبركاته يا [user] منورنا!" oninput="currentReplies[${idx}].replyText=this.value">${reply.replyText || ''}</textarea>
+                        </div>
+
+                        <div class="grid-2">
+                            <div class="form-group">
+                                <label>الرومات المسموح فيها تفعيل هذا الرد (اتركه فارغاً للكل):</label>
+                                <select class="pro-select" multiple style="height:90px;" onchange="updateReplyChannels(this, ${idx})">${channelOptions}</select>
+                            </div>
+                            <div class="form-group">
+                                <label>الرتب المسموح لها فقط بتفعيل هذا الرد (اتركه فارغاً للكل):</label>
+                                <select class="pro-select" multiple style="height:90px;" onchange="updateReplyRoles(this, ${idx})">${roleOptions}</select>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function updateReplyChannels(selectElement, idx) { currentReplies[idx].allowedChannels = Array.from(selectElement.selectedOptions).map(opt => opt.value); }
+        function updateReplyRoles(selectElement, idx) { currentReplies[idx].allowedRoles = Array.from(selectElement.selectedOptions).map(opt => opt.value); }
+        function addNewReply() { currentReplies.push({ keyword: "", matchType: "exact", replyText: "", allowedChannels: [], allowedRoles: [] }); renderAutoReplies(); }
+
+        function renderTicketPanels() {
+            const container = document.getElementById('panelsContainer');
+            container.innerHTML = '';
+
+            if (ticketPanels.length === 0) {
+                container.innerHTML = `<p style="color:#6b7280; text-align:center; padding: 20px;">لا يوجد أي لوحة تذاكر حالياً.</p>`;
+                return;
+            }
+
+            ticketPanels.forEach((panel, idx) => {
+                let channelOptions = `<option value="">-- اختر روم الإرسال --</option>`;
+                serverChannelsCached.forEach(ch => { channelOptions += `<option value="${ch.id}" ${panel.channelId === ch.id ? 'selected' : ''}>${ch.name}</option>`; });
+
+                let roleOptions = '';
+                serverRolesCached.forEach(role => {
+                    const isSelected = panel.supportRoles && panel.supportRoles.includes(role.id);
+                    roleOptions += `<option value="${role.id}" ${isSelected ? 'selected' : ''}>${role.name}</option>`;
+                });
+
+                container.innerHTML += `
+                    <div class="panel-pro-card">
+                        <div class="panel-pro-header">
+                            <span class="panel-badge-pro">لوحة #${idx + 1}</span>
+                            <input type="text" class="panel-title-input" value="${panel.name || ''}" placeholder="اسم اللوحة..." oninput="ticketPanels[${idx}].name=this.value">
+                            <button type="button" class="probot-btn-delete" onclick="ticketPanels.splice(${idx},1); renderTicketPanels();">🗑 ` + `حذف اللوحة</button>
+                        </div>
+                        <div class="grid-2" style="margin-top: 15px;">
+                            <div class="form-group">
+                                <label>روم إرسال رسالة فتح التذكرة البوت:</label>
+                                <select onchange="ticketPanels[${idx}].channelId=this.value" class="pro-select">${channelOptions}</select>
+                            </div>
+                            <div class="form-group">
+                                <label>نص الزر / اسم القائمة المنسدلة لفتح التذكرة:</label>
+                                <input type="text" value="${panel.buttonText || '📩 فتح تذكرة'}" oninput="ticketPanels[${idx}].buttonText=this.value">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>الرسالة الترحيبية التلقائية (تظهر للمستخدم فور فتح تذكرته):</label>
+                            <textarea rows="2" oninput="ticketPanels[${idx}].welcomeMessage=this.value">${panel.welcomeMessage || ''}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>رتب الدعم الفني المخصصة فقط لهذه اللوحة (Support Roles):</label>
+                            <select class="pro-select" multiple style="height:90px;" onchange="updatePanelRoles(this, ${idx})">${roleOptions}</select>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function updatePanelRoles(selectElement, idx) { ticketPanels[idx].supportRoles = Array.from(selectElement.selectedOptions).map(opt => opt.value); }
+        function addNewTicketPanel() { ticketPanels.push({ name: "لوحة تذاكر جديدة", channelId: "", buttonText: "📩 فتح تذكرة", welcomeMessage: "أهلاً بك، يرجى توضيح استفسارك هنا.", supportRoles: [] }); renderTicketPanels(); }
+        function setSelectedOptions(selectId, valuesArray) { const select = document.getElementById(selectId); if(select && valuesArray) Array.from(select.options).forEach(opt => opt.selected = valuesArray.includes(opt.value)); }
+        function getSelectedOptions(selectId) { const select = document.getElementById(selectId); return Array.from(select.selectedOptions).map(opt => opt.value); }
+
+        async function loadAllData() {
+            await loadServerMetadata();
+
+            const res = await fetch('/api/get-settings');
+            const data = await res.json();
+
+            document.getElementById('serverLanguage').value = data.general.serverLanguage;
+            
+            // تحميل بيانات الترحيب والمغادرة
+            document.getElementById('welcome_system_toggle').checked = data.welcome.enabled !== undefined ? data.welcome.enabled : true;
+            document.getElementById('welcomeChannel').value = data.welcome.welcomeChannel || '';
+            document.getElementById('welcomeMessageType').value = data.welcome.messageType || 'text';
+            document.getElementById('welcomeMessage').value = data.welcome.welcomeMessage || '';
+            document.getElementById('welcomeImage').value = data.welcome.welcomeImage || '';
+            
+            document.getElementById('leave_system_toggle').checked = data.welcome.leaveEnabled !== undefined ? data.welcome.leaveEnabled : true;
+            document.getElementById('leaveChannel').value = data.welcome.leaveChannel || '';
+            document.getElementById('leaveMessageType').value = data.welcome.leaveMessageType || 'text';
+            document.getElementById('leaveMessage').value = data.welcome.leaveMessage || '';
+            document.getElementById('leaveImage').value = data.welcome.leaveImage || '';
+
+            updateWelcomePreviewVisibility();
+            updateLeavePreviewVisibility();
+
+            currentReplies = data.autoReplies || [];
+            renderAutoReplies();
+
+            setSelectedOptions('memberRoles', data.autoRoles.memberRoles);
+            setSelectedOptions('botRoles', data.autoRoles.botRoles);
+            setSelectedOptions('protectionModRoles', data.protection.modRoles);
+
+            document.getElementById('banLimit').value = data.protection.banLimit;
+            document.getElementById('banAction').value = data.protection.banAction;
+            document.getElementById('ownerOnlyLimits').checked = data.protection.ownerOnlyLimits;
+
+            // تحميل إعدادات الأوامر وحالة تفعيل نظام الإشراف
+            const cmds = data.moderation.commands;
+            const statuses = data.moderation.statuses || {};
+            Object.keys(cmds).forEach(k => { 
+                if(document.getElementById(`cmd_${k}`)) document.getElementById(`cmd_${k}`).value = cmds[k]; 
+                if(document.getElementById(`status_${k}`)) document.getElementById(`status_${k}`).checked = statuses[k] !== undefined ? statuses[k] : true;
+            });
+
+            // نظام التذاكر
+            document.getElementById('probot_ticket_toggle').checked = data.ticket.enabled !== undefined ? data.ticket.enabled : true;
+            toggleProBotTicketSystem(document.getElementById('probot_ticket_toggle').checked);
+            document.getElementById('useEmbed').checked = data.ticket.useEmbed;
+            document.getElementById('pUserClose').checked = data.ticket.userPerms?.close || false;
+            document.getElementById('pAdminCopy').checked = data.ticket.adminPerms?.copy || false;
+            document.getElementById('pClaimSystem').checked = data.ticket.claimSystemEnabled || false;
+
+            ticketPanels = data.ticket.panels || [];
+            renderTicketPanels();
+        }
+
+        async function saveAllData() {
+            const cmdShortcuts = {};
+            const cmdStatuses = {};
+            document.querySelectorAll('[id^="cmd_"]').forEach(i => { cmdShortcuts[i.id.replace('cmd_', '')] = i.value; });
+            document.querySelectorAll('[id^="status_"]').forEach(i => { cmdStatuses[i.id.replace('status_', '')] = i.checked; });
+
+            const updatedConfig = {
+                general: { serverLanguage: document.getElementById('serverLanguage').value },
+                welcome: {
+                    enabled: document.getElementById('welcome_system_toggle').checked,
+                    welcomeChannel: document.getElementById('welcomeChannel').value,
+                    messageType: document.getElementById('welcomeMessageType').value,
+                    welcomeMessage: document.getElementById('welcomeMessage').value,
+                    welcomeImage: document.getElementById('welcomeImage').value,
+                    leaveEnabled: document.getElementById('leave_system_toggle').checked,
+                    leaveChannel: document.getElementById('leaveChannel').value,
+                    leaveMessageType: document.getElementById('leaveMessageType').value,
+                    leaveMessage: document.getElementById('leaveMessage').value,
+                    leaveImage: document.getElementById('leaveImage').value
+                },
+                autoReplies: currentReplies,
+                autoRoles: { memberRoles: getSelectedOptions('memberRoles'), botRoles: getSelectedOptions('botRoles') },
+                moderation: { commands: cmdShortcuts, statuses: cmdStatuses },
+                ticket: {
+                    enabled: document.getElementById('probot_ticket_toggle').checked,
+                    useEmbed: document.getElementById('useEmbed').checked,
+                    claimSystemEnabled: document.getElementById('pClaimSystem').checked,
+                    adminPerms: { copy: document.getElementById('pAdminCopy').checked, close: true, delete: true },
+                    userPerms: { close: document.getElementById('pUserClose').checked },
+                    panels: ticketPanels
+                },
+                protection: {
+                    modRoles: getSelectedOptions('protectionModRoles'),
+                    banLimit: parseInt(document.getElementById('banLimit').value) || 0,
+                    banAction: document.getElementById('banAction').value,
+                    ownerOnlyLimits: document.getElementById('ownerOnlyLimits').checked
+                }
+            };
+
+            const response = await fetch('/api/save-settings', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(updatedConfig)
+            });
+            const resData = await response.json();
+            alert(resData.message);
+        }
+
+        window.onload = loadAllData;
+    </script>
+</body>
+</html>
